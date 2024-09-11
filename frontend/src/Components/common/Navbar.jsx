@@ -3,24 +3,23 @@ import Logo1 from "../../Assets/Images/logo_1.png";
 import Logo2 from "../../Assets/Images/logo_2.png";
 import Logo3 from "../../Assets/Images/navbarlogo.png"
 import Login from "../Pages/Login";
+import { FaSearch } from "react-icons/fa";
 import {Link} from "react-router-dom"
 
 const Navbar = () => {
   return (
-   <div className=''>
-    <div  className="w-full bg-grey-900 flex justify-end items-center  p-2 px-12">
+   <div className='flex flex-col w-full'>
+    <div  className="w-full bg-grey-900  flex justify-end items-center  p-2 px-12">
      
      <div className='w-full h-full flex gap-8 items-center '>
      <img src={Logo1} className=" w-4/12 h-full" />
      <img src={Logo2}  className=" w-4/12 h-full"/>
      </div>
-
 <div className='text-white w-6/12'>
 Toll-free: 18002330616(10:30 AM - 06:10 PM)
 </div>
-
      </div>
-     <div className="navbar bg-base-100  mx-auto w-11/12 flex items-center ">
+     <div className="navbar bg-base-100  mx-auto w-full flex items-center ">
       <div className="navbar-start flex gap-4 items-center">
         <img src={Logo3} className=" w-2/12" />
         <h1>Government of gujrat</h1>
@@ -40,9 +39,10 @@ Toll-free: 18002330616(10:30 AM - 06:10 PM)
             <a className="hover:text-orange-300">Resources</a>
           </li>
         </ul>
-        <div className="form-control ml-4">
-          <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
-        </div>
+        <div className="form-control ml-4 relative">
+        <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto pr-8"/>
+        <FaSearch className='text-blue-500 absolute right-3 top-1/2 transform -translate-y-1/2' onClick="submit"/>
+      </div>
       </div>
       <div className="navbar-end flex gap-2">
         <Login />

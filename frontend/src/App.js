@@ -1,12 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from "./Components/common/Navbar";
-import { Route, Routes } from "react-router-dom";
-import Homepage from "./Components/Pages/Homepage";
-import Iprmanagement from "./Components/Pages/Iprmanagement";
-import Navbar from "./Components/common/Navbar";
-import Error from "./Components/Pages/Error";
-import Resources from "./Components/Pages/Resources";
-import Research from "./Components/Pages/Research";
+
 
 function App() {
   return (
