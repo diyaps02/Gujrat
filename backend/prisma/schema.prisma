@@ -12,3 +12,333 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Moderator {
+  id     Int  @id @default(autoincrement())
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+
+  // Array of user types that this moderator can control
+  controlUserTypes UserType[] @default([])
+}
+
+model Admin {
+  id     Int  @id @default(autoincrement())
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  type      UserType @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  startup         Startup?
+  innovator       Innovator?
+  iprProfessional IPRProfessional?
+  researcher      Researcher?
+  investor        Investor?
+  policymaker     Policymaker?
+  admin           Admin?
+  moderator       Moderator?
+  Founder         Founder?
+  Employee        Employee?
+}
+
+enum UserType {
+  USER // Normal user type
+  STARTUP
+  INNOVATOR
+  IPR_PROFESSIONAL
+  RESEARCHER
+  INVESTOR
+  POLICYMAKER
+  MODERATOR
+  ADMIN 
+  FOUNDER 
+  EMPLOYEE
+}
+
+model Startup {
+  id           Int          @id @default(autoincrement())
+  dpiit_id     String       @unique
+  description  String
+  foundingDate DateTime
+  location     String
+  industry     String
+  user         User         @relation(fields: [userId], references: [id])
+  userId       Int          @unique
+  founders     Founder[]
+  funding      Funding[]
+  milestones   Milestone[]
+  team         Employee[]
+  Patent       Patent[]
+  Research     Research?    @relation(fields: [researchId], references: [id])
+  researchId   Int?
+  Investment   Investment[]
+  Exit         Exit[]
+}
+
+model Founder {
+  id          Int     @id @default(autoincrement())
+  contactInfo String
+  background  String
+  role        String
+  startup     Startup @relation(fields: [startupId], references: [id])
+  startupId   Int
+  user        User    @relation(fields: [userId], references: [id])
+  userId      Int @unique
+}
+
+model Funding {
+  id        Int     @id @default(autoincrement())
+  round     Int
+  investor  String
+  amount    Float
+  valuation Float
+  startup   Startup @relation(fields: [startupId], references: [id])
+  startupId Int
+}
+
+model Milestone {
+  id            Int      @id @default(autoincrement())
+  achievement   String
+  productLaunch DateTime
+  partnership   String
+  startup       Startup  @relation(fields: [startupId], references: [id])
+  startupId     Int
+}
+
+model Employee {
+  id         Int      @id @default(autoincrement())
+  role       String
+  skills     String[]
+  experience Int
+  startup    Startup  @relation(fields: [startupId], references: [id])
+  startupId  Int
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int @unique
+}
+
+model Innovator {
+  id              Int              @id @default(autoincrement())
+  contactInfo     String
+  background      String
+  skills          String[]
+  user            User             @relation(fields: [userId], references: [id])
+  userId          Int              @unique
+  innovations     Innovation[]
+  patents         Patent[]
+  collaborations  Collaboration[]
+  supportServices SupportService[]
+}
+
+model Innovation {
+  id               Int       @id @default(autoincrement())
+  title            String
+  description      String
+  industry         String
+  developmentStage String
+  innovator        Innovator @relation(fields: [innovatorId], references: [id])
+  innovatorId      Int
+}
+
+model Patent {
+  id          Int          @id @default(autoincrement())
+  title       String
+  inventors   String[] // Needs at least one inventor
+  filingDate  DateTime
+  status      PatentStatus
+  innovator   Innovator?   @relation(fields: [innovatorId], references: [id])
+  innovatorId Int?
+  startup     Startup?     @relation(fields: [startupId], references: [id])
+  startupId   Int?
+  research    Research?    @relation(fields: [researchId], references: [id])
+  researchId  Int?
+}
+
+enum PatentStatus {
+  FILED
+  PENDING
+  GRANTED
+  REJECTED
+}
+
+model Collaboration {
+  id          Int          @id @default(autoincrement())
+  project     String
+  partner     String
+  innovator   Innovator    @relation(fields: [innovatorId], references: [id])
+  innovatorId Int
+  Researcher  Researcher[]
+}
+
+model SupportService {
+  id          Int       @id @default(autoincrement())
+  service     String
+  provider    String
+  innovator   Innovator @relation(fields: [innovatorId], references: [id])
+  innovatorId Int
+}
+
+model IPRProfessional {
+  id             Int      @id @default(autoincrement())
+  contactInfo    String
+  background     String
+  expertise      String[]
+  firm           String
+  designation    String
+  experience     Int
+  qualifications String[]
+  certifications String[]
+  memberships    String[]
+  user           User     @relation(fields: [userId], references: [id])
+  userId         Int      @unique
+  clients        Client[]
+  cases          Case[]
+}
+
+model Client {
+  id                Int             @id @default(autoincrement())
+  name              String
+  type              ClientType
+  iprProfessional   IPRProfessional @relation(fields: [iprProfessionalId], references: [id])
+  iprProfessionalId Int
+}
+
+enum ClientType {
+  STARTUP
+  INNOVATOR
+  RESEARCHER
+}
+
+model Case {
+  id                Int             @id @default(autoincrement())
+  type              CaseType
+  description       String
+  outcome           String
+  iprProfessional   IPRProfessional @relation(fields: [iprProfessionalId], references: [id])
+  iprProfessionalId Int
+}
+
+enum CaseType {
+  PATENT
+  TRADEMARK
+  COPYRIGHT
+  DISPUTE
+}
+
+model Researcher {
+  id             Int             @id @default(autoincrement())
+  affiliation    String
+  role           String
+  expertise      String[]
+  user           User            @relation(fields: [userId], references: [id])
+  userId         Int             @unique
+  projects       Research[]
+  publications   Publication[]
+  collaborations Collaboration[]
+}
+
+model Research {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String
+  funding      Float
+  duration     Int
+  researcher   Researcher @relation(fields: [researcherId], references: [id])
+  researcherId Int
+  patents      Patent[]
+  startups     Startup[]
+}
+
+model Publication {
+  id           Int        @id @default(autoincrement())
+  title        String
+  authors      String[]
+  journal      String
+  citations    Int
+  researcher   Researcher @relation(fields: [researcherId], references: [id])
+  researcherId Int
+}
+
+model Investor {
+  id          Int                  @id @default(autoincrement())
+  type        InvestorType
+  industry    String[]
+  user        User                 @relation(fields: [userId], references: [id])
+  userId      Int                  @unique
+  portfolio   Investment[]
+  exits       Exit[]
+  preferences InvestorPreference[]
+  network     InvestorNetwork[]
+}
+
+enum InvestorType {
+  ANGEL
+  VENTURE_CAPITAL
+  PRIVATE_EQUITY
+  CORPORATE
+}
+
+model Investment {
+  id         Int      @id @default(autoincrement())
+  startup    Startup  @relation(fields: [startupId], references: [id])
+  startupId  Int
+  amount     Float
+  ownership  Float
+  investor   Investor @relation(fields: [investorId], references: [id])
+  investorId Int
+}
+
+model Exit {
+  id         Int      @id @default(autoincrement())
+  type       ExitType
+  startup    Startup  @relation(fields: [startupId], references: [id])
+  startupId  Int
+  amount     Float
+  investor   Investor @relation(fields: [investorId], references: [id])
+  investorId Int
+}
+
+enum ExitType {
+  ACQUISITION
+  IPO
+}
+
+model InvestorPreference {
+  id         Int             @id @default(autoincrement())
+  criteria   String
+  stage      InvestmentStage
+  sector     String
+  investor   Investor        @relation(fields: [investorId], references: [id])
+  investorId Int
+}
+
+enum InvestmentStage {
+  SEED
+  SERIES_A
+  SERIES_B
+  SERIES_C
+  GROWTH
+}
+
+model InvestorNetwork {
+  id           Int      @id @default(autoincrement())
+  contact      String
+  relationship String
+  investor     Investor @relation(fields: [investorId], references: [id])
+  investorId   Int
+}
+
+model Policymaker {
+  id         Int    @id @default(autoincrement())
+  department String
+  role       String
+  user       User   @relation(fields: [userId], references: [id])
+  userId     Int    @unique
+}
