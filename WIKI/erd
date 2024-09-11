@@ -1,0 +1,162 @@
+title Startups and Innovations ERD
+
+startups [icon: briefcase, color: lightblue]{
+  id string pk
+  DPIIT_id string
+  founderId string
+  fundingId string
+  milestoneId string
+  teamId string
+  startupId string
+}
+
+founders [icon: user, color: yellow]{
+  id string pk
+  name string
+}
+
+funding [icon: dollar-sign, color: green]{
+  id string pk
+  amount float
+  date timestamp
+}
+
+milestones [icon: flag, color: red]{
+  id string pk
+  description string
+  date timestamp
+}
+
+team [icon: users, color: blue]{
+  id string pk
+  name string
+}
+
+innovators [icon: user-check, color: orange]{
+  id string pk
+  patentId string
+  collaborationId string
+  supportId string
+}
+
+patents [icon: file-text, color: purple]{
+  id string pk
+  title string
+  filingDate timestamp
+}
+
+collaborations [icon: handshake, color: pink]{
+  id string pk
+  description string
+}
+
+support [icon: life-buoy, color: teal]{
+  id string pk
+  type string
+}
+
+ipr [icon: shield, color: gray]{
+  id string pk
+  patentId string
+  trademarkId string
+  copyrightId string
+  licensingId string
+  enforcementId string
+}
+
+trademarks [icon: tag, color: brown]{
+  id string pk
+  name string
+}
+
+copyrights [icon: book, color: black]{
+  id string pk
+  title string
+}
+
+licensing [icon: file, color: cyan]{
+  id string pk
+  terms string
+}
+
+enforcement [icon: gavel, color: darkred]{
+  id string pk
+  action string
+}
+
+investors [icon: dollar-sign, color: green]{
+  id string pk
+  portfolioId string
+  exitId string
+  preferenceId string
+  networkId string
+}
+
+portfolio [icon: folder, color: lightgray]{
+  id string pk
+  startupId array
+}
+
+exits [icon: log-out, color: darkblue]{
+  id string pk
+  date timestamp
+}
+
+preferences [icon: sliders, color: violet]{
+  id string pk
+  criteria string
+}
+
+network [icon: globe, color: lightgreen]{
+  id string pk
+  connections array
+}
+
+research [icon: book-open, color: lightyellow]{
+  id string pk
+  projectId string
+  researcherId string
+  publicationId string
+  collaborationId string
+  patentId string
+}
+
+projects [icon: clipboard, color: lightcoral]{
+  id string pk
+  title string
+}
+
+researchers [icon: user, color: lightblue]{
+  id string pk
+  name string
+}
+
+publications [icon: file-text, color: lightgreen]{
+  id string pk
+  title string
+  date timestamp
+}
+
+// Relationships
+startups.founderId > founders.id
+startups.fundingId > funding.id
+startups.milestoneId > milestones.id
+startups.teamId > team.id
+
+innovators.patentId > patents.id
+innovators.collaborationId > collaborations.id
+innovators.supportId > support.id
+ipr.patentId > patents.id
+ipr.trademarkId > trademarks.id
+ipr.copyrightId > copyrights.id
+ipr.licensingId > licensing.id
+ipr.enforcementId > enforcement.id
+investors.portfolioId > portfolio.id
+investors.exitId > exits.id
+investors.preferenceId > preferences.id
+investors.networkId > network.id
+research.projectId > projects.id
+research.researcherId > researchers.id
+research.publicationId > publications.id
+research.collaborationId > collaborations.id
+research.patentId > patents.id
