@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import Projects from "../../Assets/Demmo";
 
 const Sidebar = () => {
 
@@ -41,7 +42,7 @@ const Sidebar = () => {
   }
 
   return (
-  <div className="w-64 bg-gray-100 p-4 rounded-md sticky top-4 shadow-md">
+  <div className="w-64 h-3/4 bg-gray-100 p-4 rounded-md sticky top-4 shadow-md">
     <h2 className="text-lg font-bold mb-2">Filters</h2>
     <hr className='border-2 mb-2' />
     <div className="mb-4">
@@ -139,20 +140,37 @@ const Research = () => {
   return (
     <div className="container mx-auto mt-8 flex">
       <Sidebar />
-      <div className="flex-grow ml-8 ">
+      <div className="flex-grow ml-8 w-64">
         <div className="shadow-md rounded-md p-4 flex flex-col gap-4">
-            <div className="border-2 border-orange-300 p-4 rounded-md">
-              <h2 className="text-lg font-bold mb-2">Project 1</h2>
-              <p className="text-sm text-gray-600">Description of project 1.</p>
+          {Projects.map((item, index) => (
+            <div
+              key={index}
+              className="article-item mb-4 p-4 border border-gray-300 rounded"
+            >
+               <div className="flex flex-col ">
+                <div className='w-full flex justify-between'>
+                  <h2 className="text-xl font-bold">{item.ProjectTitle}</h2>
+                  <p className="text-sm text-gray-600">{item.ProjectStatus}</p>
+                </div>
+                <div className='flex text-xs text-grey-300'>
+                  <p>{item.ListedBy} posted this on {item.UploadedDate}</p>
+                </div>
+                <p className="text-sm text-gray-600 font-semibold">Field: {item.ResearchArea}</p>
+                <p className="text-sm text-gray-600 font-semibold">Funding: {item.FundingSource}</p>
+                <p className="text-sm text-gray-600">{item.Description}</p>
+                <div className='flex justify-between text-sm text-gray-600 mt-4'>
+                  <div>
+                    <p className='font-semibold'>Location: {item.GeographicalLocation}</p>
+                  </div>
+                  <button className='bg-blue-500 text-white px-4 py-2 rounded-md'>View More</button>
+                </div>
+               </div>
             </div>
-            <div className="border-2 border-orange-300 p-4 rounded-md">
-              <h2 className="text-lg font-bold mb-2">Project 2</h2>
-              <p className="text-sm text-gray-600">Description of project 2.</p>
-            </div>
+          ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Research

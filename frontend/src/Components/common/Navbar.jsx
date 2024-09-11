@@ -3,7 +3,8 @@ import Logo1 from "../../Assets/Images/logo_1.png";
 import Logo2 from "../../Assets/Images/logo_2.png";
 import Logo3 from "../../Assets/Images/navbarlogo.png";
 import Login from "../Pages/Login";
-import { Link } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
+import {Link} from "react-router-dom"
 
 const Navbar = () => {
   return (
@@ -35,7 +36,7 @@ const Navbar = () => {
               <a className="hover:text-orange-300">IPR Management</a>
             </li>
             <li>
-              <a className="hover:text-orange-300">Resources</a>
+              <Link to="/resources" className="hover:text-orange-300">Resources</Link>
             </li>
           </ul>
           <div className="form-control ml-4">

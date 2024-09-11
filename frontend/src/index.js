@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import Homepage from './Components/Pages/Homepage';
 import About from './Components/Pages/About';
+import Resources from "./Components/Pages/Resources";
+import Article from './Components/Pages/Article';
 import Iprmanagement from './Components/Pages/Iprmanagement';
 import Signup from './Components/common/Signup';
 import Research from './Components/Pages/Research'
@@ -34,7 +36,16 @@ const router = createBrowserRouter([
       {
         path: "research",
         element: <Research/>
+      },
+      {
+        path:"resources",
+        element:<Resources/>
+      },
+      {
+        path:"article/:article_id",
+        element:<Article/>
       }
+
     ]
   }
 ]);
