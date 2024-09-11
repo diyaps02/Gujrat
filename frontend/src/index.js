@@ -6,6 +6,7 @@ import Homepage from './Components/Pages/Homepage';
 import About from './Components/Pages/About';
 import Iprmanagement from './Components/Pages/Iprmanagement';
 import Signup from './Components/common/Signup';
+import Research from './Components/Pages/Research'
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <Signup />
+      },
+      {
+        path: "research",
+        element: <Research/>
       }
     ]
   }
