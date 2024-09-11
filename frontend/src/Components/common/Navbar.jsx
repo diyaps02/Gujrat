@@ -3,6 +3,7 @@ import Logo1 from "../../Assets/Images/logo_1.png";
 import Logo2 from "../../Assets/Images/logo_2.png";
 import Logo3 from "../../Assets/Images/navbarlogo.png"
 import Login from "../Pages/Login";
+import {Link} from "react-router-dom"
 
 const Navbar = () => {
   return (
@@ -44,11 +45,11 @@ Toll-free: 18002330616(10:30 AM - 06:10 PM)
         </div>
       </div>
       <div className="navbar-end flex gap-2">
-  <Login />
-  <a className="btn bg-orange-50 text-orange-300 rounded-md px-6">
-    Signup
-  </a>
-</div>
+        <Login />
+        <Link to="/signup" className="btn bg-orange-50 text-orange-300 rounded-md px-6">
+          Signup
+        </Link>
+      </div>
     </div>
    </div>
   );
