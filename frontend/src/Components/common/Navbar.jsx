@@ -36,7 +36,7 @@ Toll-free: 18002330616(10:30 AM - 06:10 PM)
             <a className="hover:text-orange-300">IPR Management</a>
           </li>
           <li>
-            <a className="hover:text-orange-300">Resources</a>
+            <a className="hover:text-orange-300" href='/resources'>Resources</a>
           </li>
         </ul>
         <div className="form-control ml-4 relative">

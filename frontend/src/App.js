@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from "./Components/common/Navbar";
 
-
 function App() {
   return (
     <div className="App bg-slate-500 w-full h-full">

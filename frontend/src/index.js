@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import Homepage from './Components/Pages/Homepage';
 import About from './Components/Pages/About';
+import Resources from "./Components/Pages/Resources";
+import Article from './Components/Pages/Article';
 import Iprmanagement from './Components/Pages/Iprmanagement';
 import Signup from './Components/common/Signup';
 import reportWebVitals from './reportWebVitals';
@@ -29,7 +31,16 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <Signup />
+      },
+      {
+        path:"resources",
+        element:<Resources/>
+      },
+      {
+        path:"article/:article_id",
+        element:<Article/>
       }
+
     ]
   }
 ]);
