@@ -7,6 +7,7 @@ import cors from 'cors'
 // import session from 'express-session';
 
 import router from "./router";
+import ApiError from "./utils/ApiError";
 
 /**
  * Handles the Express server and all its routes
@@ -31,7 +32,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Set up session management
-// I can later do this on the specific routes
+// I can later do this on the specific routes say for google auth auth, etc.
 // app.use(session({
 //   secret: process.env.SESSION_SECRET || 'your-secret',
 //   resave: false,
@@ -56,7 +57,7 @@ app.use((req: Request, res: Response) => {
 // Error handling middleware
 app.use((err: any, req: Request, res: Response, next: express.NextFunction) => {
   console.error(err.stack);
-  res.status(500).json({ error: "Internal server error" });
+  res.status(500).json(new ApiError(500,err.message, err.stack));
 });
 
 export default app;

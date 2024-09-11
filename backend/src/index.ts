@@ -7,8 +7,8 @@ import os, { cpus } from "os";
 import app from "./server";
 
 const numCPUs = cpus().length;
-import PORT from "./utils/constants";
-const port = PORT;
+import configs from "./utils/constants";
+const port = configs.PORT;
 
 if (cluster.isPrimary) {
   console.log(`Primary ${process.pid} is running`);
@@ -21,7 +21,7 @@ if (cluster.isPrimary) {
 
   cluster.on("exit", (worker, code, signal) => {
     console.log(`Worker ${worker.process.pid} exited`);
-    cluster.fork();
+    
   });
 } else {
   app.listen(port, () => {

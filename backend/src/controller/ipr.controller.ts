@@ -35,9 +35,10 @@ async function signupIPRProfessional({
     if (!newUser || !newUser.iprProfessional) {
       throw new Error("Failed to create user and IPR Professional");
     }
-
+    const {password: _, ...IPRUser} = newUser;
     return {
       message: "IPR Professional account created successfully",
+      user: IPRUser
     };
   } catch (error) {
     console.error("Signup error:", error);
@@ -68,9 +69,10 @@ async function loginIPRProfessional({ email, password }: LoginInput) {
     }
 
     const token = generateToken(user.id, user.email, "IPRProfessional");
+    const { password: _, ...userWithoutPassword } = user;
     return {
       message: "Login successful",
-      token,
+      token,user: userWithoutPassword
     };
   } catch (error) {
     console.error("Login error:", error);

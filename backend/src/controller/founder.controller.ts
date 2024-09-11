@@ -30,17 +30,18 @@ async function signupFounder(founderInfo: FounderSignupInput) {
     if (!newUser || !newUser.Founder) {
       throw new Error("Failed to create user and founder");
     }
-    
+    const { password:_, ...Founder } = newUser;
     return {
       message: "Founder account created successfully",
+      user: Founder,
     };
   } catch (error) {
-    console.error("Signup error:", error);
     return {
       message: "Error during signup",
     };
   }
-}interface LoginInput {
+}
+interface LoginInput {
   email: string;
   password: string;
 }
@@ -61,10 +62,13 @@ async function loginFounder({ email, password }: LoginInput) {
       return { message: "Invalid email or password" };
     }
 
+    const { password:_, ...Founder } = user;
+
     const token = generateToken(user.id, user.email, "Founder");
     return {
       message: "Login successful",
       token,
+      user: Founder,
     };
   } catch (error) {
     console.error("Login error:", error);
@@ -72,4 +76,26 @@ async function loginFounder({ email, password }: LoginInput) {
   }
 }
 
-export { signupFounder, loginFounder };
+/**
+ * To ge the 10 founders
+ */
+async function getFounders() {
+  try {
+    const founders = await prisma.founder.findMany({
+      include: {
+        user: true,
+      },
+    });
+    return {
+      message: "Founders fetched successfully",
+      founders,
+    };
+  } catch (error) {
+    console.error("Error fetching founders:", error);
+    return {
+      message: "Error fetching founders",
+    };
+  }
+}
+
+export { signupFounder, loginFounder, getFounders };

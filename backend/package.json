@@ -10,7 +10,7 @@
     "prisma:pull": "prisma db pull",
     "prisma:push": "prisma db push",
     "start": "tsc && node dist/index.js",
-    "dev": "concurrently \"tsc --watch\" \"node dist/index.js\""
+    "dev": "nodemon "
   },
   "keywords": [
     "backend",
@@ -39,7 +39,7 @@
     "@types/multer": "^1.4.12",
     "@types/node": "^22.5.4",
     "@types/validator": "^13.12.1",
-    "concurrently": "^9.0.0",
+    "nodemon": "^3.1.4",
     "prisma": "^5.19.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"

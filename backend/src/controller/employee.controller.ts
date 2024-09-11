@@ -1,11 +1,11 @@
 import prisma from "../utils/PrismaClient/prismaClient";
-import { hashPassword } from "../utils/signup.utils";
-
+import { generateToken, hashPassword } from "../utils/signup.utils";
+import bcrypt from "bcrypt"
 import { Employee, User } from "@prisma/client";
 
 interface EmployeeSignupInput extends User, Employee {}
 
-async function signupEmployee({
+export async function signupEmployee({
   email,
   password,
   name,
@@ -29,9 +29,13 @@ async function signupEmployee({
         Employee: true,
       },
     });
-
+    if (!newUser || !newUser.Employee) {
+      throw new Error("Failed to create user and Employee");
+    }
+    const { password: _, ...Employee } = newUser;
     return {
       message: "Employee account created successfully",
+      user: Employee
     };
   } catch (error) {
     console.error("Signup error:", error);
@@ -39,15 +43,21 @@ async function signupEmployee({
       message: "Error during signup",
     };
   }
+
 }
-async function loginEmployee({ email, password }: LoginInput) {
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export async function loginEmployee({ email, password }: LoginInput) {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
-      include: { employee: true },
+      include: { Employee: true },
     });
 
-    if (!user || !user.employee) {
+    if (!user || !user.Employee) {
       return { message: "Invalid email or password" };
     }
 
@@ -57,9 +67,11 @@ async function loginEmployee({ email, password }: LoginInput) {
     }
 
     const token = generateToken(user.id, user.email, "Employee");
+
+    const { password: _, ...Employee } = user;
     return {
       message: "Login successful",
-      token,
+      token,user: Employee
     };
   } catch (error) {
     console.error("Login error:", error);
